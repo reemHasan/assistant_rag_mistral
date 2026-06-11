@@ -1,0 +1,47 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+# Virtual environments
+.venv
+# Environnement virtuel
+venv/
+env/
+ENV/
+.env
+# logs
+*.log
+logs/
+# Temp files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+# data files
+data/
+# Jupyter Notebook
+.ipynb_checkpoints
+
+vector_db/
