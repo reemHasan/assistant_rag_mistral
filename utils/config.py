@@ -13,8 +13,8 @@ if not MISTRAL_API_KEY:
     # raise ValueError("Clé API Mistral manquante. Veuillez la définir dans le fichier .env")
 
 # --- Modèles Mistral ---
-EMBEDDING_MODEL = "mistral-embed"
-MODEL_NAME = "mistral-small-latest" # Ou un autre modèle comme mistral-large-latest
+EMBEDDING_MODEL = "mistral-embed-2312"
+MODEL_NAME = "mistral-small-2506" # Ou un autre modèle comme mistral-large-latest
 
 # --- Configuration de l'Indexation ---
 # INPUT_DATA_URL = os.getenv("INPUT_DATA_URL") # Décommentez si vous utilisez une URL
