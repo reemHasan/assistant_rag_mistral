@@ -1,0 +1,133 @@
+[
+  {
+    "category": "simple",
+    "question": "According to Reddit fans, what are the two market sizes of OKC and Indiana in the Finals?",
+    "ground_truth": "Fans describe it as the 25th vs 45th largest media markets — explicitly cited as a reason casual viewers won't tune in."
+  },
+  {
+    "category": "simple",
+    "question": "What specific product does a fan mention OKC's offense being centered around?",
+    "ground_truth": "Fans describe OKC's offense as heliocentric around Shai Gilgeous-Alexander, particularly in the half court."
+  },
+  {
+    "category": "simple",
+    "question": "What ranking are OKC and Indiana by playoff net rating according to a commenter?",
+    "ground_truth": "One user clarifies they are 2nd and 5th respectively in playoff net rating — not necessarily the top two by all advanced stats as the OP claims."
+  },
+  {
+    "category": "simple",
+    "question": "According to the Reddit posts, what is Reggie Miller's rTS% score in the playoff efficiency ranking?",
+    "ground_truth": "Reggie Miller tops the list. His exact rTS% score is truncated in the table header, but the post places him first — ahead of Kawhi Leonard at 112, making Reggie's rTS% higher than 112. The OP confirms in comments his prime rTS was 115."
+  },
+  {
+    "category": "simple",
+    "question": "What are Reggie Miller's career win shares and playoff win shares compared to Klay Thompson's?",
+    "ground_truth": "Per a commenter citing specific figures: Reggie Miller career win shares 140 vs Klay Thompson 57. Playoff win shares: Reggie 20 vs Klay 10."
+  },
+  {
+    "category": "simple",
+    "question": "Why is Karl Malone not in the top 20 of the OP's list?",
+    "ground_truth": "The OP explains Karl Malone's career playoff rTS% is 99, which is described as pretty terrible for an all-time big man whose regular season rTS% is 109. The OP does not consider him a better playoff scorer than any of the 20 listed."
+  },
+  {
+    "category": "simple",
+    "question": "What 3-point shooting percentage is Randle shooting in this series, according to Reddit fans?",
+    "ground_truth": "Fans mention Randle shooting 45% from three, described as a massive boost for a career 33% shooter."
+  },
+  {
+    "category": "simple",
+    "question": "What is the main weakness Reddit fans identify for the Orlando Magic?",
+    "ground_truth": "Lack of three-point shooting and floor spacing. Multiple comments state they have 'no shooters' and won't win without a 3-ball."
+  },
+
+  {
+    "category": "comparative",
+    "question": "How do Reddit fans contrast OKC's and Indiana's playing styles in this thread?",
+    "ground_truth": "OKC is described as heliocentric around Shai with strong defense but less ball movement and foul-baiting. Indiana is praised for fast-paced play, high ball movement, everyone getting involved, and exciting comeback wins. Fans find Indiana more fun to watch despite OKC being favored."
+  },
+  {
+    "category": "comparative",
+    "question": "How do fans in this thread compare the NBA's approach to market size vs the NFL's?",
+    "ground_truth": "Fans argue the NFL has mastered selling the league as a whole product — small market teams like Green Bay or Pittsburgh have massive fanbases. The NBA still relies on superstar-driven interest, making it vulnerable when stars like LeBron or Curry don't make the Finals. Several users express hope the NBA moves toward the NFL model."
+  },
+  {
+    "category": "comparative",
+    "question": "How do fans debate Reggie Miller vs Dwyane Wade in this thread?",
+    "ground_truth": "Fans are split. Some say Wade clearly beats Reggie (higher peak, 3 rings, more dominant). Others argue Reggie leads in career win shares, WS/48, and VORP, and note Wade's wins came mostly with LeBron. The OP defends Reggie's 14 playoff series wins with zero HOF teammates vs Wade's 22 wins with top-10 all-time teammates."
+  },
+  {
+    "category": "comparative",
+    "question": "How do Reddit fans compare Reggie Miller and Stephen Curry in terms of playoff efficiency and playing style?",
+    "ground_truth": "The table places Curry at rTS% 110 (3rd), below Reggie. Fans note Curry's efficiency is boosted by the 3-point line existing, while Reggie achieved his without modern spacing. One fan says Reggie is closer to Steph than to Klay. Critics counter Steph is far superior as an on-ball creator."
+  },
+  {
+    "category": "comparative",
+    "question": "How do Reddit fans compare the Timberwolves and the Magic in terms of playoff ceiling?",
+    "ground_truth": "Wolves are seen as having the highest ceiling outside OKC — elite on both ends. Magic are impressive but limited, needing shooters around Paolo and Franz to be a real contender."
+  },
+  {
+    "category": "comparative",
+    "question": "What do fans say about Randle's defensive engagement now compared to his past playoff appearances?",
+    "ground_truth": "Fans note a significant improvement: he looks more engaged and focused, compared to previous playoff runs where he was hurt and underperforming. His past poor reputation is attributed to injuries rather than ability."
+  },
+
+  {
+    "category": "multihop",
+    "question": "What are the three main reasons Reddit fans give for why casual viewers aren't interested in the OKC-Indiana Finals?",
+    "ground_truth": "1) Small market teams (25th vs 45th media market) with low name recognition among casuals. 2) No prolonged dynasty or superstar with cross-over appeal like LeBron or Curry — SGA just won MVP but non-NBA fans don't know him. 3) No national TV exposure for Indiana during the season (zero national games), so people didn't see their exciting comebacks."
+  },
+  {
+    "category": "multihop",
+    "question": "According to fans, what would need to change for the NBA to improve ratings for small-market Finals matchups?",
+    "ground_truth": "Fans suggest: better TV accessibility (fewer paywalls), reducing ads especially in the last minute, fixing free throw hunting and foul-baiting, promoting teams as a product rather than just superstars, and potentially a hard salary cap to improve parity like the NFL."
+  },
+  {
+    "category": "multihop",
+    "question": "What is the OP's stated methodology for building the top 20 playoff scorers list, and what criticism did it receive?",
+    "ground_truth": "OP states criteria was mainly total playoff points, with common sense applied to prioritize true first options like Barkley/Giannis/Jokic over high-volume role players like Tony Parker or Scottie Pippen. rTS% measures relative true shooting vs era average. Criticism: the table was initially unsorted (called out with 581 upvotes), rTS% definition wasn't explained, and some argued most efficient relative to era is not the same as most efficient ever."
+  },
+  {
+    "category": "multihop",
+    "question": "According to fans, what supporting cast context explains why Reggie Miller's playoff efficiency stat may be inflated compared to Jordan or LeBron?",
+    "ground_truth": "Fans argue: Reggie played in an era with lower pace and usage, making 20ppg more impressive but less comparable. He faced one guaranteed All-Star guard slot taken by Jordan every year in the East. The Pacers built the offense around his off-ball movement — when defenses focused on him, teammates got open. This team context may have enabled higher efficiency than facing iso-heavy defensive schemes aimed at true ball-dominant #1 options."
+  },
+  {
+    "category": "multihop",
+    "question": "What are the three main caveats Reddit fans raise against calling Reggie Miller the most efficient first option in playoff history?",
+    "ground_truth": "1) Low volume — he never topped 26 USG% and often went 6/8 FGA, so the sample is less demanding than true #1 options. 2) Screen-dependent — his game relied on off-ball screens, meaning teams could neutralize him by smothering him off-ball and forcing dribble creation. 3) rTS% rewards shooting efficiency but ignores playmaking, defense, and overall basketball impact."
+  },
+  {
+    "category": "multihop",
+    "question": "What changes to the Timberwolves' roster made them look better than last year despite trading KAT?",
+    "ground_truth": "Ant trusting teammates more, less iso play, Edwards' leap, and Randle shooting 45% from three balancing out rough stretches from Donte and NAW."
+  },  {
+    "category": "noisy",
+    "question": "pkoi les gens disent que okc-indiana c nul alors que c les meilleurs équipes??",
+    "ground_truth": "RAG identifies that fans blame media bias toward big markets and superstar narratives, not actual basketball quality. Casual viewers don't know SGA or Haliburton. Acceptable partial answer mentioning market size or name recognition."
+  },
+  {
+    "category": "noisy",
+    "question": "is shai a flopper",
+    "ground_truth": "Thread contains strong fan opinions that SGA foul-baits and flops — one commenter says he's a top 3-5 player but hard to celebrate because of the flopping. Counterviews exist saying OKC's defense is also physical. No definitive stat is given."
+  },
+  {
+    "category": "noisy",
+    "question": "is mj better than reggie in playoffs bc more points",
+    "ground_truth": "Thread directly addresses this. Jordan has 5987 playoff points vs Reggie's roughly 2572, but Reggie's rTS% (115 in prime) beats Jordan's efficiency margin. OP clarifies you can't call Reggie the best scorer ever — just the most efficient first option by this metric."
+  },
+  {
+    "category": "noisy",
+    "question": "reggie miller meilleur scoreur playoffs de lhistoire ou pas??",
+    "ground_truth": "RAG explains Reggie tops the rTS% efficiency list but fans debate whether rTS% alone proves he's the best. He had lower volume than Jordan/LeBron. Acceptable: partial answer citing the table or the methodology debate."
+  },
+  {
+    "category": "noisy",
+    "question": "c ki le meilleur défenseur dans ces playoffs selon reddit lol",
+    "ground_truth": "Randle's defensive improvement is the most discussed individual defensive story, with Anthony Edwards also highlighted. Noisy/slang query."
+  },
+  {
+    "category": "noisy",
+    "question": "whats the deal w the beybale guys in the knicks series",
+    "ground_truth": "'Beyblade' is a fan nickname for players who spam spin moves — Randle and Siakam historically. Randle is described as having moved past this in the current series."
+  }
+]

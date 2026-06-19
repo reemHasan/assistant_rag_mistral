@@ -15,7 +15,7 @@ if not MISTRAL_API_KEY:
 # --- Modèles Mistral ---
 EMBEDDING_MODEL = "mistral-embed-2312"
 MODEL_NAME = "mistral-small-2506" # Ou un autre modèle comme mistral-large-latest
-
+EVALUATION_MODEL_MISTRAL = "mistral-large-latest"
 # --- Configuration de l'Indexation ---
 # INPUT_DATA_URL = os.getenv("INPUT_DATA_URL") # Décommentez si vous utilisez une URL
 INPUT_DIR = "inputs"                # Dossier pour les données sources après extraction
@@ -29,6 +29,11 @@ EMBEDDING_BATCH_SIZE = 32           # Taille des lots pour l'API d'embedding
 
 # --- Configuration de la Recherche ---
 SEARCH_K = 5                        # Nombre de documents à récupérer par défaut
+
+# --- Gemini Evaluation model & embedding -------
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+EVALUATION_MODEL_NAME = "gemini-3.1-flash-lite"
+EVALUATION_EMBEDDING  = "gemini-embedding-2-preview"
 
 # --- Configuration de la Base de Données ---
 DATABASE_DIR = "database"

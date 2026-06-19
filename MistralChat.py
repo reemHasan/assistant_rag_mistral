@@ -1,9 +1,9 @@
 # MistralChat.py (version RAG)
 import streamlit as st
-import os
 import logging
 from mistralai.client import MistralClient
 from mistralai.models.chat_completion import ChatMessage
+import os
 from dotenv import load_dotenv
 
 # --- Importations depuis vos modules ---

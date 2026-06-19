@@ -98,7 +98,32 @@ streamlit run MistralChat.py
 
 L'application sera accessible à l'adresse http://localhost:8501 dans votre navigateur.
 
+## Evaluation
+### 1. Générer des (réponses, contextes) pour l'ensemble de données d'évaluation
+ Votre fichier de test doit être au format JSON, qui contient une liste de dictionnaires, chaque dictionnaire étant composé de trois clés: 
+ * category
+ * question
+ * ground_truth
 
+Placez votre fichier de test dans le dossier evaluation/eval_artifacts, puis exécutez la commande 
+```bash
+python run_rag_over_testset.py --testset_name eval_dataset.json --testset_filled testset_filled.json
+```
+
+### 2. Ragas evaluation
+Étant donné que le prototype de rag est basé sur Mistralai V0.4.2 et que Ragas nécessite Mistralai V1.X, nous créons pour cela un environnement séparé pour l'évaluation de Ragas dans le dossier « evaluation ».
+```bash
+uv sync # create virtual environment
+.venv/Scripts/activate # ativate evaluation environment
+```
+Démarrez l'évaluation en exécutant le script : evaluate_ragas.py, qui accepte deux modèles de juge: 
+* mistral : utiliser mistral-large-latest comme juge
+* gemini : utiliser gemini-3.1-flash-lite comme juge
+
+```bash
+python evaluate_ragas.py --judge_model gemini
+```
+***Note*** Pour utiliser gemini, il faut ajouter ``GEMINI_API_KEY`` dans le fichier `.env`
 ## Modules principaux
 
 ### `utils/vector_store.py`
