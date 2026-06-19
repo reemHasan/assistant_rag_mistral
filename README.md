@@ -52,7 +52,9 @@ MISTRAL_API_KEY=votre_clé_api_mistral
 .
 ├── MistralChat.py          # Application Streamlit principale
 ├── indexer.py              # Script pour indexer les documents
+├── run_rag_over_testset.py # Script pour préparer le test set pour Ragas
 ├── inputs/                 # Dossier pour les documents sources
+├── evaluation/             # Dossier contient tous les fichier pour evaluer le prototype
 ├── vector_db/              # Dossier pour l'index FAISS et les chunks
 ├── database/               # Base de données SQLite pour les interactions
 └── utils/                  # Modules utilitaires
