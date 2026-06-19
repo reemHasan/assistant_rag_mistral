@@ -11,7 +11,7 @@ from datasets import Dataset
 # ── Judge: LangChain & mistralai for RAGAS ──────
 from langchain_mistralai import ChatMistralAI, MistralAIEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
-
+from langchain_core.rate_limiters import InMemoryRateLimiter
 # ── RAGAS ──────────────────────────────────────────────────────────────────
 from ragas import evaluate, RunConfig
 from ragas.llms import LangchainLLMWrapper
@@ -25,6 +25,13 @@ from ragas.metrics import (
 import sys
 ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(str(ROOT_DIR))
+
+rate_limiter = InMemoryRateLimiter(
+    requests_per_second=0.05, # ≈ 3 requests/minute
+    check_every_n_seconds=0.1,
+    max_bucket_size=1,
+)
+
 
 # define metric, and strict generate 1 question for answer relevancy to not supercharge llm
 answer_relevancy = AnswerRelevancy(strictness=1)
@@ -157,7 +164,7 @@ if __name__ == "__main__":
             model       = EVALUATION_MODEL_NAME,
             google_api_key = GEMINI_API_KEY,
             temperature = 0,
-            n=1,
+            rate_limiter=rate_limiter,
         )
         judge_embeddings = GoogleGenerativeAIEmbeddings(
             model           = EVALUATION_EMBEDDING,

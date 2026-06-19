@@ -14,3 +14,6 @@ dependencies = [
     "mistralai==1.9.10",
     "langchain-mistralai==0.2.12",
 ]
+[tool.pyright]
+typeCheckingMode = "off"
+ignore = ["*"]
