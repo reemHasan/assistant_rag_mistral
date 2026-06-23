@@ -1,15 +1,18 @@
 [project]
-name = "assistant-rag-mistral"
-version = "0.1.0"
+name = "assistant-rag-mistral-v2"
+version = "0.2.0"
 description = "NBA Analyst AI"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "easyocr>=1.7.2",
-    "faiss-cpu==1.10.0",
-    "langchain>=0.3.30",
-    "langchain-community>=0.3.27",
-    "mistralai==0.4.2",
+    "ragas==0.4.3",
+    "langchain==0.3.27",
+    "langchain-core==0.3.75",
+    "langchain-community==0.3.27",
+    "langchain-google-genai==2.1.10",
+    "langchain-google-vertexai==2.0.28",
+    "mistralai==1.9.10",
+    "langchain-mistralai==0.2.12",
     "openpyxl==3.1.5",
     "pandas==2.2.3",
     "pillow>=9.0.0",
@@ -23,4 +26,14 @@ dependencies = [
     "streamlit==1.44.1",
     "streamlit-feedback==0.1.4",
     "tqdm>=4.68.2",
+    "easyocr>=1.7.2",
+    "faiss-cpu==1.10.0",
+    "datasets>=4.0.0",              # ragas 0.4.3 requires this explicitly
+    "langchain-text-splitters>=0.3.9,<1.0.0",  # langchain 0.3.27 requires it
+    "logfire>=1.0.0",               # used throughout evaluate_ragas.py
+    "nest-asyncio",                 # ragas requires it; needed for asyncio.run() inside async context
 ]
+
+[tool.pyright]
+typeCheckingMode = "off"
+ignore = ["*"]
