@@ -148,6 +148,18 @@ Gère la base de données SQLite pour les interactions :
 - Enregistrement des questions et réponses
 - Stockage des feedbacks utilisateurs
 - Récupération des statistiques
+- create db and inser info into tables 
+```bash
+(assistant-rag-mistral-v2)\assistant_rag_mistral> python -m utils.load_excel_to_db --excel '.\inputs\inputs_sql_tool\regular+NBA+(2).xlsx' --db ./sqlite_db/nba.db
+```
+- run generator and chat with it in CLI
+```bash
+(assistant-rag-mistral-v2)\assistant_rag_mistral> python -m rag.generator 
+```
+- run agent rag & sql to chat from CLI
+```bash
+(assistant-rag-mistral-v2)\assistant_rag_mistral> python -m agent
+```
 
 ## Personnalisation
 

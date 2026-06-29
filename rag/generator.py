@@ -44,12 +44,19 @@ def build_rag_answer(
         contexts  = [doc.page_content for doc in retrieved]
 
         context_block = "\n\n---\n\n".join(contexts)
-        prompt = (
+        """prompt = (
             "You are an NBA analytics assistant for coaches. "
             "Answer the question strictly using the context below. "
             "If the answer is not in the context, say 'Information not available in the source.'\n\n"
             f"Context:\n{context_block}\n\n"
             f"Question: {question}\n\nAnswer:"
+        )
+        """
+        prompt = ("Tu es 'NBA Analyst AI', un assistant expert sur la ligue de basketball NBA. "
+            "Ta mission est de répondre aux questions des fans en animant le débat."
+            f"Context:\n{context_block}\n\n"
+            f"QUESTION DU FAN: {question}\n\n"
+            "RÉPONSE DE L'ANALYSTE NBA:"
         )
         # v1.x: chat.complete() with plain dict messages (no ChatMessage class)
         response = mistral_llm.chat.complete(

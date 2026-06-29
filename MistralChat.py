@@ -1,20 +1,17 @@
-# MistralChat.py (version RAG)
+# MistralChat.py (version Agent RAG & SQL)
 import streamlit as st
 import logging
-from mistralai.client import MistralClient
-from mistralai.models.chat_completion import ChatMessage
-import os
-from dotenv import load_dotenv
-
+from langchain_core.messages import HumanMessage, AIMessage
 # --- Importations depuis vos modules ---
 try:
     from utils.config import (
-        MISTRAL_API_KEY, MODEL_NAME, SEARCH_K,
+        MISTRAL_API_KEY, MODEL_NAME, DATABASE_URL,
         APP_TITLE, NAME
     )
-    from utils.vector_store import VectorStoreManager
+    from utils.models import PipelineConfig
+    from agent_react import build_agent
 except ImportError as e:
-    st.error(f"Erreur d'importation: {e}. Vérifiez la structure de vos dossiers et les fichiers dans 'utils'.")
+    st.error(f"Erreur d'importation: {e}. Vérifiez la structure de vos dossiers .")
     st.stop()
 
 
@@ -30,159 +27,88 @@ if not api_key:
     st.error("Erreur : Clé API Mistral non trouvée (MISTRAL_API_KEY). Veuillez la définir dans le fichier .env.")
     st.stop()
 
-try:
-    client = MistralClient(api_key=api_key)
-    logging.info("Client Mistral initialisé.")
-except Exception as e:
-    st.error(f"Erreur lors de l'initialisation du client Mistral : {e}")
-    logging.exception("Erreur initialisation client Mistral")
-    st.stop()
+#------- functions -----------------------
+def history_to_text(history):
+    lines = []
+
+    for msg in history:
+        if isinstance(msg, HumanMessage):
+            lines.append(f"User: {msg.content}")
+        elif isinstance(msg, AIMessage):
+            lines.append(f"Assistant: {msg.content}")
+
+    return "\n".join(lines)
 
 # --- Chargement du Vector Store (mis en cache) ---
-@st.cache_resource # Garde le manager chargé en mémoire pour la session
-def get_vector_store_manager():
-    logging.info("Tentative de chargement du VectorStoreManager...")
+@st.cache_resource # Garde l'agent chargé en mémoire pour la session
+def get_agent():
+    logging.info("Tentative de chargement du agent...")
     try:
-        manager = VectorStoreManager()
-        # Vérifie si l'index a bien été chargé par le constructeur
-        if manager.index is None or not manager.document_chunks:
-            st.error("L'index vectoriel ou les chunks n'ont pas pu être chargés.")
-            st.warning("Assurez-vous d'avoir exécuté 'python indexer.py' après avoir placé vos fichiers dans le dossier 'inputs'.")
-            logging.error("Index Faiss ou chunks non trouvés/chargés par VectorStoreManager.")
+        config = PipelineConfig() 
+        agent = build_agent(db_uri=DATABASE_URL, mistral_api_key=MISTRAL_API_KEY, agent_model=config.mistral_model, 
+                         sql_model=config.sql_generator_model, embed_model=config.embed_model, top_k_rag=config.top_k, verbose=True, chat=True)
+        # Vérifie si l'agent a bien été chargé par le constructeur
+        if agent is None:
+            st.error("L'AgentExecuter n'est pas pu être chargés.")
+            st.warning("Assurez-vous d'avoir exécuté 'python indexer.py' et 'load_excel_to_db.py' après avoir placé vos fichiers dans le dossier 'inputs'.")
+            logging.error("AgentExecuter non chargé par build_agent")
             return None # Retourne None si échec
-        logging.info(f"VectorStoreManager chargé avec succès ({manager.index.ntotal} vecteurs).")
-        return manager
-    except FileNotFoundError:
-         st.error("Fichiers d'index ou de chunks non trouvés.")
-         st.warning("Veuillez exécuter 'python indexer.py' pour créer la base de connaissances.")
-         logging.error("FileNotFoundError lors de l'init de VectorStoreManager.")
-         return None
+        logging.info("AgentExecuter chargé avec succès")
+        return agent
     except Exception as e:
-        st.error(f"Erreur inattendue lors du chargement du VectorStoreManager: {e}")
-        logging.exception("Erreur chargement VectorStoreManager")
+        st.error(f"Erreur inattendue lors du chargement du AgentExecuter: {e}")
+        logging.exception("Erreur chargement AgentExecuter")
         return None
 
-vector_store_manager = get_vector_store_manager()
-
-# --- Prompt Système pour RAG ---
-# Adaptez ce prompt selon vos besoins
-SYSTEM_PROMPT = f"""Tu es 'NBA Analyst AI', un assistant expert sur la ligue de basketball NBA. 
-Ta mission est de répondre aux questions des fans en animant le débat.
----
-{{context_str}}
----
-QUESTION DU FAN:
-{{question}}
-RÉPONSE DE L'ANALYSTE NBA:
-"""
+agent = get_agent()
 
 # --- Initialisation de l'historique de conversation ---
-if "messages" not in st.session_state:
-    # Message d'accueil initial
-    st.session_state.messages = [{"role": "assistant", "content": f"Bonjour ! Je suis votre analyste IA pour la {NAME}. Posez-moi vos questions sur les équipes, les joueurs ou les statistiques, et je vous répondrai en me basant sur les données les plus récentes."}]
-
-# --- Fonctions ---
-
-def generer_reponse(prompt_messages: list[ChatMessage]) -> str:
-    """
-    Envoie le prompt (qui inclut maintenant le contexte) à l'API Mistral.
-    """
-    if not prompt_messages:
-         logging.warning("Tentative de génération de réponse avec un prompt vide.")
-         return "Je ne peux pas traiter une demande vide."
-    try:
-        logging.info(f"Appel à l'API Mistral modèle '{model}' avec {len(prompt_messages)} message(s).")
-        # Log le contenu du prompt (peut être long) - commenter si trop verbeux
-        # logging.debug(f"Prompt envoyé à l'API: {prompt_messages}")
-
-        response = client.chat(
-            model=model,
-            messages=prompt_messages,
-            temperature=0.1, # Température basse pour des réponses factuelles basées sur le contexte
-            # top_p=0.9,
-        )
-        if response.choices and len(response.choices) > 0:
-            logging.info("Réponse reçue de l'API Mistral.")
-            return response.choices[0].message.content
-        else:
-            logging.warning("L'API n'a pas retourné de choix valide.")
-            return "Désolé, je n'ai pas pu générer de réponse valide pour le moment."
-    except Exception as e:
-        st.error(f"Erreur lors de l'appel à l'API Mistral: {e}")
-        logging.exception("Erreur API Mistral pendant client.chat")
-        return "Je suis désolé, une erreur technique m'empêche de répondre. Veuillez réessayer plus tard."
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = [
+        AIMessage(content=f"Bonjour ! Je suis votre analyste IA pour la {NAME}. Posez-moi vos questions sur les équipes, les joueurs ou les statistiques, et je vous répondrai en me basant sur les données les plus récentes.")
+    ]
 
 # --- Interface Utilisateur Streamlit ---
 st.title(APP_TITLE)
 st.caption(f"Assistant virtuel pour {NAME} | Modèle: {model}")
 
 # Affichage des messages de l'historique (pour l'UI)
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.write(message["content"])
+for msg in st.session_state.chat_history:
+    if isinstance(msg, HumanMessage):
+        with st.chat_message("user"):
+            st.write(msg.content)
+    elif isinstance(msg, AIMessage):
+        with st.chat_message("assistant"):
+            st.write(msg.content)
 
 # Zone de saisie utilisateur
-if prompt := st.chat_input(f"Posez votre question sur la {NAME}..."):
+if user_prompt := st.chat_input(f"Posez votre question sur la {NAME}..."):
     # 1. Ajouter et afficher le message de l'utilisateur
-    st.session_state.messages.append({"role": "user", "content": prompt})
+    #st.session_state.messages.append({"role": "user", "content": user_prompt})
+    st.session_state.chat_history.append(HumanMessage(content=user_prompt))
     with st.chat_message("user"):
-        st.write(prompt)
+        st.write(user_prompt)
 
-    # === Début de la logique RAG ===
-
-    # 2. Vérifier si le Vector Store est disponible
-    if vector_store_manager is None:
-        st.error("Le service de recherche de connaissances n'est pas disponible. Impossible de traiter votre demande.")
-        logging.error("VectorStoreManager non disponible pour la recherche.")
-        # On arrête ici car on ne peut pas faire de RAG
-        st.stop()
-
-    # 3. Rechercher le contexte dans le Vector Store
-    try:
-        logging.info(f"Recherche de contexte pour la question: '{prompt}' avec k={SEARCH_K}")
-        search_results = vector_store_manager.search(prompt, k=SEARCH_K)
-        logging.info(f"{len(search_results)} chunks trouvés dans le Vector Store.")
-    except Exception as e:
-        st.error(f"Une erreur est survenue lors de la recherche d'informations pertinentes: {e}")
-        logging.exception(f"Erreur pendant vector_store_manager.search pour la query: {prompt}")
-        search_results = [] # On continue sans contexte si la recherche échoue
-
-    # 4. Formater le contexte pour le prompt LLM
-    context_str = "\n\n---\n\n".join([
-        f"Source: {res['metadata'].get('source', 'Inconnue')} (Score: {res['score']:.1f}%)\nContenu: {res['text']}"
-        for res in search_results
-    ])
-    # this must be above !!!!!!!
-    if not search_results:
-        context_str = "Aucune information pertinente trouvée dans la base de connaissances pour cette question."
-        logging.warning(f"Aucun contexte trouvé pour la query: {prompt}")
-
-    # 5. Construire le prompt final pour l'API Mistral en utilisant le System Prompt RAG
-    final_prompt_for_llm = SYSTEM_PROMPT.format(context_str=context_str, question=prompt)
-
-    # Créer la liste de messages pour l'API (juste le prompt système/utilisateur combiné)
-    messages_for_api = [
-        # On pourrait séparer system et user, mais Mistral gère bien un long message user structuré
-        ChatMessage(role="user", content=final_prompt_for_llm)
-    ]
-
-    # === Fin de la logique RAG ===
-
-
-    # 6. Afficher indicateur + Générer la réponse de l'assistant via LLM
+    # 2. Générer la réponse de l'assistant via LLM
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         message_placeholder.text("...") # Indicateur simple
+        try:
+            result = agent.invoke(
+                {"input": user_prompt,
+                "chat_history": history_to_text(st.session_state.chat_history),}
+                )
+            response_content = result["output"]
+            # Affichage de la réponse complète
+            message_placeholder.write(response_content)
+        except Exception as e:
+            st.error(f"Erreur lors de l'appel à l'API Mistral: {e}")
+            logging.exception("Erreur API Mistral pendant AgentExecuter")
 
-        # Génération de la réponse de l'assistant en utilisant le prompt augmenté
-        response_content = generer_reponse(messages_for_api)
-
-        # Affichage de la réponse complète
-        message_placeholder.write(response_content)
-
-    # 7. Ajouter la réponse de l'assistant à l'historique (pour affichage UI)
-    st.session_state.messages.append({"role": "assistant", "content": response_content})
+    # 3. Ajouter la réponse de l'assistant à l'historique (pour affichage UI)
+    #st.session_state.messages.append({"role": "assistant", "content": response_content})
+    st.session_state.chat_history.append(AIMessage(content=response_content))
 
 # Petit pied de page optionnel
 st.markdown("---")
-st.caption("Powered by Mistral AI & Faiss | Data-driven NBA Insights")
+st.caption("Powered by LangChain & Mistral AI & Faiss | Data-driven NBA Insights")

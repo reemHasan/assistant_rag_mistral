@@ -21,12 +21,13 @@ elif not LOGFIRE_TOKEN:
 # --- Modèles Mistral ---
 EMBEDDING_MODEL = "mistral-embed-2312"
 MODEL_NAME = "mistral-small-2506" # Ou un autre modèle comme mistral-large-latest
+SQL_MODEL = "mistral-large-latest"
 EVALUATION_MODEL_MISTRAL = "mistral-large-latest"
 
 # --- Configuration de l'Indexation ---
 # INPUT_DATA_URL = os.getenv("INPUT_DATA_URL") # Décommentez si vous utilisez une URL
 BASE_DIR = Path(__file__).parent.parent
-INPUT_DIR = BASE_DIR/"inputs"                # Dossier pour les données sources après extraction
+INPUT_DIR = BASE_DIR/"inputs/inputs_rag_tool"                # Dossier pour les données sources après extraction
 VECTOR_DB_DIR = BASE_DIR/"vector_db"         # Dossier pour stocker l'index Faiss et les chunks
 #FAISS_INDEX_FILE = os.path.join(VECTOR_DB_DIR, "faiss_index.idx")
 #DOCUMENT_CHUNKS_FILE = os.path.join(VECTOR_DB_DIR, "document_chunks.pkl")
@@ -43,9 +44,9 @@ EVALUATION_MODEL_NAME = "gemini-3.1-flash-lite"
 EVALUATION_EMBEDDING  = "gemini-embedding-2-preview"
 
 # --- Configuration de la Base de Données ---
-#DATABASE_DIR = "database"
-#DATABASE_FILE = os.path.join(DATABASE_DIR, "interactions.db")
-#DATABASE_URL = f"sqlite:///{DATABASE_FILE}" # URL pour SQLAlchemy
+DATABASE_DIR = BASE_DIR/"sqlite_db"
+DATABASE_FILE = os.path.join(DATABASE_DIR, "nba.db")
+DATABASE_URL = f"sqlite:///{DATABASE_FILE}" # URL pour SQLAlchemy
 
 # --- Configuration de l'Application ---
 APP_TITLE = "NBA Analyst AI"

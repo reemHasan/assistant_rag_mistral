@@ -91,6 +91,7 @@ def chunk_and_validate(
         valid=len(valid_chunks),
         invalid=invalid_count,
     )
+    console.print(f"Chunking complete: {len(docs)} has been chuncked into {len(valid_chunks)}")
     return valid_chunks, langchain_docs
 
 
