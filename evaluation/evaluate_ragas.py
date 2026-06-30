@@ -47,7 +47,7 @@ def run_ragas_evaluation(
     llm_wrapper,
     embed_wrapper,
 ) -> pd.DataFrame:
-    """Run RAGAS metrics, validate results with Pydantic."""
+    """Run RAGAS metrics on the whole dataset """
     with open(testTest_file, "r", encoding="utf-8") as f:
         dataset = json.load(f)
     hf_dataset = Dataset.from_list(dataset)
@@ -93,7 +93,7 @@ def save_outputs(OUTPUT_DIR, results: list[dict], rows: list[dict]) -> None:
             "answer_relevancy":    r["answer_relevancy"],
             "context_recall":      r["context_recall"],
             "context_precision":   r["context_precision"],
-            "answer_correctness":  r["answer_correctness"],
+            #"answer_correctness":  r["answer_correctness"],
             "mean_score":          r["mean_score"],
         })
     df = pd.DataFrame(df_rows)
@@ -111,8 +111,12 @@ def save_outputs(OUTPUT_DIR, results: list[dict], rows: list[dict]) -> None:
 def main(modelname, judge_model, judge_embedding):
     """ 
     This function create instance of judge model & embedding
-    Load evaluation dataset, pass them to ragas 
+    Load filled evaluation dataset, pass them to ragas 
     Return ragas results as Pandas.Dataframe
+
+    Note: 
+    Before runing this script, you MUST execute the script "run_rag_over_testset.py"
+    to fill the testset with answer+context from rag
     """
     t0 = time.perf_counter()
     print(" Starting evaluation Rag prototype by RAGAs :")
