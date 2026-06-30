@@ -144,6 +144,10 @@ STRICT RULES:
 - Never invent an Action name — use only [{tool_names}].
 - Never produce a Final Answer before using a required tool.
 - If the tool says data is not available, say so — do not retry.
+- Every Thought MUST be followed immediately by Action or Final Answer — never both.
+- NEVER write "Final Answer:" in the same message as "Action:".
+- If you are not 100% certain you have enough information, choose Action — not Final Answer.
+- Once you write "Final Answer:", stop generating immediately. Do not add anything after it.
 """
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -305,7 +309,8 @@ def build_agent(
         tools                = tools,
         verbose              = verbose,
         max_iterations       = max_iterations,
-        handle_parsing_errors= True,    # recover from malformed LLM output
+        #handle_parsing_errors= True,    # recover from malformed LLM output
+        handle_parsing_errors="Check your output and make sure it conforms to the format — use either Action or Final Answer, never both in the same response.",
         return_intermediate_steps=True, # expose tool calls in result dict
         early_stopping_method="generate",
     )

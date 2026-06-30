@@ -1,0 +1,210 @@
+[
+  {
+    "question": "According to Reddit fans, what are the two market sizes of OKC and Indiana in the Finals?",
+    "category": "simple",
+    "faithfulness": 0.7142857142857143,
+    "answer_relevancy": 0.8389872666019261,
+    "context_recall": 1.0,
+    "context_precision": 0.49999999995
+  },
+  {
+    "question": "What specific product does a fan mention OKC's offense being centered around?",
+    "category": "simple",
+    "faithfulness": 0.6666666666666666,
+    "answer_relevancy": 0.7510870339186452,
+    "context_recall": 1.0,
+    "context_precision": 0.49999999995
+  },
+  {
+    "question": "What ranking are OKC and Indiana by playoff net rating according to a commenter?",
+    "category": "simple",
+    "faithfulness": 1.0,
+    "answer_relevancy": 0.8168625757029815,
+    "context_recall": 1.0,
+    "context_precision": 0.19999999998
+  },
+  {
+    "question": "According to the Reddit posts, what is Reggie Miller's rTS% score in the playoff efficiency ranking?",
+    "category": "simple",
+    "faithfulness": 1.0,
+    "answer_relevancy": 0.0,
+    "context_recall": 0.3333333333333333,
+    "context_precision": 0.0
+  },
+  {
+    "question": "What are Reggie Miller's career win shares and playoff win shares compared to Klay Thompson's?",
+    "category": "simple",
+    "faithfulness": 1.0,
+    "answer_relevancy": 0.9628333524218384,
+    "context_recall": 1.0,
+    "context_precision": 0.9999999999
+  },
+  {
+    "question": "Why is Karl Malone not in the top 20 of the OP's list?",
+    "category": "simple",
+    "faithfulness": 0.5,
+    "answer_relevancy": 0.9772018480093627,
+    "context_recall": 1.0,
+    "context_precision": 0.49999999995
+  },
+  {
+    "question": "What 3-point shooting percentage is Randle shooting in this series, according to Reddit fans?",
+    "category": "simple",
+    "faithfulness": 0.4,
+    "answer_relevancy": 0.0,
+    "context_recall": 0.0,
+    "context_precision": 0.0
+  },
+  {
+    "question": "What is the main weakness Reddit fans identify for the Orlando Magic?",
+    "category": "simple",
+    "faithfulness": 1.0,
+    "answer_relevancy": 0.980967778150768,
+    "context_recall": 1.0,
+    "context_precision": 0.8333333332916666
+  },
+  {
+    "question": "How do Reddit fans contrast OKC's and Indiana's playing styles in this thread?",
+    "category": "comparative",
+    "faithfulness": 0.9545454545454546,
+    "answer_relevancy": 0.9533211586051337,
+    "context_recall": 1.0,
+    "context_precision": 0.249999999975
+  },
+  {
+    "question": "How do fans in this thread compare the NBA's approach to market size vs the NFL's?",
+    "category": "comparative",
+    "faithfulness": 1.0,
+    "answer_relevancy": 0.9073820433299623,
+    "context_recall": 1.0,
+    "context_precision": 0.8055555555287036
+  },
+  {
+    "question": "How do fans debate Reggie Miller vs Dwyane Wade in this thread?",
+    "category": "comparative",
+    "faithfulness": 0.8888888888888888,
+    "answer_relevancy": 0.9096866940302789,
+    "context_recall": 0.5,
+    "context_precision": 0.0
+  },
+  {
+    "question": "How do Reddit fans compare Reggie Miller and Stephen Curry in terms of playoff efficiency and playing style?",
+    "category": "comparative",
+    "faithfulness": 0.9545454545454546,
+    "answer_relevancy": 0.9424732229106951,
+    "context_recall": 0.5,
+    "context_precision": 0.249999999975
+  },
+  {
+    "question": "How do Reddit fans compare the Timberwolves and the Magic in terms of playoff ceiling?",
+    "category": "comparative",
+    "faithfulness": 0.8333333333333334,
+    "answer_relevancy": 0.9759628086190834,
+    "context_recall": 0.5,
+    "context_precision": 0.0
+  },
+  {
+    "question": "What do fans say about Randle's defensive engagement now compared to his past playoff appearances?",
+    "category": "comparative",
+    "faithfulness": 0.7777777777777778,
+    "answer_relevancy": 0.8869838662295192,
+    "context_recall": 1.0,
+    "context_precision": 0.3333333333
+  },
+  {
+    "question": "What are the three main reasons Reddit fans give for why casual viewers aren't interested in the OKC-Indiana Finals?",
+    "category": "multihop",
+    "faithfulness": 0.7692307692307693,
+    "answer_relevancy": 0.915876507980173,
+    "context_recall": 0.6666666666666666,
+    "context_precision": 0.0
+  },
+  {
+    "question": "According to fans, what would need to change for the NBA to improve ratings for small-market Finals matchups?",
+    "category": "multihop",
+    "faithfulness": 1.0,
+    "answer_relevancy": 0.942579112819692,
+    "context_recall": 0.0,
+    "context_precision": 0.0
+  },
+  {
+    "question": "What is the OP's stated methodology for building the top 20 playoff scorers list, and what criticism did it receive?",
+    "category": "multihop",
+    "faithfulness": 0.6666666666666666,
+    "answer_relevancy": 0.0,
+    "context_recall": 0.0,
+    "context_precision": 0.0
+  },
+  {
+    "question": "According to fans, what supporting cast context explains why Reggie Miller's playoff efficiency stat may be inflated compared to Jordan or LeBron?",
+    "category": "multihop",
+    "faithfulness": 0.7894736842105263,
+    "answer_relevancy": 0.9415080476906791,
+    "context_recall": 0.75,
+    "context_precision": 0.0
+  },
+  {
+    "question": "What are the three main caveats Reddit fans raise against calling Reggie Miller the most efficient first option in playoff history?",
+    "category": "multihop",
+    "faithfulness": 0.7692307692307693,
+    "answer_relevancy": 0.9359513100600823,
+    "context_recall": 0.0,
+    "context_precision": 0.0
+  },
+  {
+    "question": "What changes to the Timberwolves' roster made them look better than last year despite trading KAT?",
+    "category": "multihop",
+    "faithfulness": 0.9444444444444444,
+    "answer_relevancy": 0.8968851745713146,
+    "context_recall": 0.0,
+    "context_precision": 0.0
+  },
+  {
+    "question": "pkoi les gens disent que okc-indiana c nul alors que c les meilleurs équipes??",
+    "category": "noisy",
+    "faithfulness": 0.8421052631578947,
+    "answer_relevancy": 0.7771714788469375,
+    "context_recall": 0.6666666666666666,
+    "context_precision": 0.36666666664833336
+  },
+  {
+    "question": "is shai a flopper",
+    "category": "noisy",
+    "faithfulness": 1.0,
+    "answer_relevancy": 0.7437368429468543,
+    "context_recall": 1.0,
+    "context_precision": 0.999999999975
+  },
+  {
+    "question": "is mj better than reggie in playoffs bc more points",
+    "category": "noisy",
+    "faithfulness": 0.9,
+    "answer_relevancy": 0.8554532378541501,
+    "context_recall": 0.6666666666666666,
+    "context_precision": 0.8666666666377778
+  },
+  {
+    "question": "reggie miller meilleur scoreur playoffs de lhistoire ou pas??",
+    "category": "noisy",
+    "faithfulness": 0.7857142857142857,
+    "answer_relevancy": 0.819369567152521,
+    "context_recall": 0.3333333333333333,
+    "context_precision": 0.99999999998
+  },
+  {
+    "question": "c ki le meilleur défenseur dans ces playoffs selon reddit lol",
+    "category": "noisy",
+    "faithfulness": 0.3333333333333333,
+    "answer_relevancy": 0.0,
+    "context_recall": 0.0,
+    "context_precision": 0.0
+  },
+  {
+    "question": "whats the deal w the beybale guys in the knicks series",
+    "category": "noisy",
+    "faithfulness": 0.75,
+    "answer_relevancy": 0.8848699087900667,
+    "context_recall": 1.0,
+    "context_precision": 0.9999999999
+  }
+]

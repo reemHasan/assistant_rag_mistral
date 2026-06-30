@@ -118,12 +118,12 @@ python run_rag_over_testset.py --testset_name eval_dataset.json --testset_filled
 uv sync # create virtual environment
 .venv/Scripts/activate # ativate evaluation environment
 ```
-Démarrez l'évaluation en exécutant le script : evaluate_ragas.py, qui accepte deux modèles de juge: 
-* mistral : utiliser mistral-large-latest comme juge
+Démarrez l'évaluation en exécutant le script : evaluate_ragas.py, qui accepte un modèle de juge: 
+
 * gemini : utiliser gemini-3.1-flash-lite comme juge
 
 ```bash
-python evaluate_ragas.py --judge_model gemini
+assistant_rag_mistral> python -m evaluation.evaluate_ragas
 ```
 ***Note*** Pour utiliser gemini, il faut ajouter ``GEMINI_API_KEY`` dans le fichier `.env`
 ## Modules principaux

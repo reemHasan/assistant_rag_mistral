@@ -92,14 +92,14 @@ class EvalResult(BaseModel, plugin_settings=PluginSettings(logfire={"record": "a
     answer_relevancy:   float | None = Field(ge=0, le=1, default=None)
     context_recall:     float | None = Field(ge=0, le=1, default=None)
     context_precision:  float | None = Field(ge=0, le=1, default=None)
-    answer_correctness: float | None = Field(ge=0, le=1, default=None)
+    #answer_correctness: float | None = Field(ge=0, le=1, default=None)
 
     @property
     def mean_score(self) -> float:
         scores = [s for s in [
             self.faithfulness, self.answer_relevancy,
             self.context_recall, self.context_precision,
-            self.answer_correctness,
+            #self.answer_correctness,
         ] if s is not None]
         return round(sum(scores) / len(scores), 4) if scores else 0.0
 
