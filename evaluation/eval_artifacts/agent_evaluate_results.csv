@@ -1,0 +1,196 @@
+category,expected_tool,tools_used,is_hybrid,routing_correct,routing_error_type,question,ground_truth,answer,sql_query,sql_execution_success,result_non_empty,faithfulness,answer_relevancy,context_recall,context_precision,mean_score
+sql_simple_ranking,nba_stats_sql,nba_stats_sql,False,True,,Who grabbed the most total rebounds this season?,"Ivica Zubac led with 1008 total rebounds in 80 games, followed by Domantas Sabonis (973 in 70 games) and Karl-Anthony Towns (922 in 72 games).",Ivica Zubac grabbed the most total rebounds this season with 1008 rebounds.,"SELECT p.name, t.code AS team,
+       s.reb AS total_rebounds,
+       s.gp
+FROM players p
+JOIN teams t ON p.team_id = t.team_id
+JOIN player_stats s ON p.player_id = s.player_id
+WHERE s.season = '2024-25'
+ORDER BY s.reb DESC
+LIMIT 10;",True,True,1.0,0.9641,,,0.982
+sql_simple_ranking,nba_stats_sql,nba_stats_sql,False,True,,Who had the most double-doubles this season?,"Domantas Sabonis led with 61 double-doubles in 70 games, followed by Nikola Jokić (59 in 70 games) and Ivica Zubac (59 in 80 games).",Domantas Sabonis had the most double-doubles this season with 61.,"SELECT p.name, t.code AS team,
+       s.dd2 AS double_doubles,
+       s.gp
+FROM players p
+JOIN teams t ON p.team_id = t.team_id
+JOIN player_stats s ON p.player_id = s.player_id
+WHERE s.season = '2024-25'
+ORDER BY s.dd2 DESC
+LIMIT 10;",True,True,1.0,0.9755,,,0.9878
+sql_simple_ranking,nba_stats_sql,nba_stats_sql,False,True,,Which player had the best true shooting percentage this season with at least 500 points?,"Jarrett Allen led with 72.4% TS on 1107 points, followed by Daniel Gafford at 71.6% and Jalen Duren at 70.3%.","Jarrett Allen had the best true shooting percentage this season with at least 500 points, at 72.4%. He scored 1,107 total points for the Cleveland Cavaliers, averaging 13.5 points per game.","SELECT p.name, t.code AS team,
+       s.ts_pct,
+       ROUND(s.pts * 1.0 / s.gp, 1) AS pts_pg,
+       s.pts AS total_pts
+FROM players p
+JOIN teams t ON p.team_id = t.team_id
+JOIN player_stats s ON p.player_id = s.player_id
+WHERE s.season = '2024-25' AND s.pts >= 500
+ORDER BY s.ts_pct DESC
+LIMIT 1;",True,True,0.25,0.9718,,,0.6109
+sql_simple_ranking,nba_stats_sql,nba_stats_sql,False,True,,Which player had the highest usage rate this season (minimum 40 games)?,"Giannis Antetokounmpo had the highest usage rate at 34.6% in 67 games, followed by SGA at 33.6% in 76 games.","Giannis Antetokounmpo had the highest usage rate this season with 34.6%, having played 67 games.","SELECT p.name, t.code AS team,
+       s.usg_pct,
+       s.gp
+FROM players p
+JOIN teams t ON p.team_id = t.team_id
+JOIN player_stats s ON p.player_id = s.player_id
+WHERE s.season = '2024-25' AND s.gp >= 40
+ORDER BY s.usg_pct DESC
+LIMIT 10;",True,True,1.0,0.9021,,,0.951
+sql_noisy,nba_stats_sql,nba_stats_sql,False,True,,qui marque le plus de points dans la ligue cette saison?,Shai Gilgeous-Alexander led the league with 2485 total points (32.7 per game) in 76 games during the 2024-25 season.,"Shai Gilgeous-Alexander est le leader en points marqués dans la ligue cette saison avec 2485 points, soit une moyenne de 32,7 points par match en 76 matchs joués pour les Oklahoma City Thunder.","SELECT p.name, t.code AS team,
+       s.pts AS total_points,
+       ROUND(s.pts * 1.0 / s.gp, 1) AS points_per_game,
+       s.gp
+FROM players p
+JOIN teams t ON p.team_id = t.team_id
+JOIN player_stats s ON p.player_id = s.player_id
+WHERE s.season = '2024-25'
+ORDER BY s.pts DESC
+LIMIT 1;",True,True,0.75,0.9208,,,0.8354
+sql_noisy,nba_stats_sql,nba_stats_sql,False,True,,whos the best rebounder rn in nba stats wise,"Ivica Zubac led with 1008 total rebounds (12.6 per game) in 80 games, followed by Domantas Sabonis with 973 rebounds in 70 games.","Based on current NBA statistics, the best rebounder is Andre Drummond from the Philadelphia 76ers, with a rebounding percentage (reb_pct) of 20.5% and 7.8 rebounds per game. Other top rebounders include Jonas Valančiūnas (20.3% reb_pct) and Ivica Zubac (19.9% reb_pct).","SELECT p.name, t.code AS team,
+       ROUND(s.reb * 1.0 / s.gp, 1) AS reb_per_game,
+       s.reb_pct,
+       s.oreb_pct,
+       s.dreb_pct,
+       s.gp
+FROM players p
+JOIN teams t ON p.team_id = t.team_id
+JOIN player_stats s ON p.player_id = s.player_id
+WHERE s.season = '2024-25' AND s.gp >= 20
+ORDER BY s.reb_pct DESC
+LIMIT 10;",True,True,0.875,0.8832,,,0.8791
+sql_advanced,nba_stats_sql,nba_stats_sql,False,True,,Which team had the best average net rating this season?,"OKC players had the best collective net rating figures. Individually, players on winning teams like CLE and OKC show the highest net ratings. The query groups by team to find the best aggregate net rating.",The Oklahoma City Thunder had the best average net rating this season with a rating of 7.7.,"SELECT t.code, t.full_name,
+       ROUND(AVG(s.net_rtg), 1) AS avg_net_rtg
+FROM players p
+JOIN teams t ON p.team_id = t.team_id
+JOIN player_stats s ON p.player_id = s.player_id
+WHERE s.season = '2024-25'
+GROUP BY t.team_id
+ORDER BY avg_net_rtg DESC
+LIMIT 1;",True,True,0.5,0.9773,,,0.7387
+sql_advanced,nba_stats_sql,nba_stats_sql,False,True,,Who had the best effective field goal percentage (EFG%) this season with at least 500 points?,"Jarrett Allen led with 70.6% EFG on 1107 points, followed by Daniel Gafford at 70.2% and Jalen Duren at 69.2%.","The player with the best effective field goal percentage (EFG%) this season among those who scored at least 500 points is Jarrett Allen from the Cleveland Cavaliers, with an EFG% of 70.6%. He scored a total of 1,107 points this season.","SELECT p.name, t.code AS team,
+       s.efg_pct,
+       ROUND(s.pts * 1.0 / s.gp, 1) AS pts_per_game,
+       s.pts AS total_points
+FROM players p
+JOIN teams t ON p.team_id = t.team_id
+JOIN player_stats s ON p.player_id = s.player_id
+WHERE s.season = '2024-25' AND s.pts >= 500
+ORDER BY s.efg_pct DESC
+LIMIT 15;",True,True,0.6667,0.9792,,,0.8229
+sql_advanced,nba_stats_sql,nba_stats_sql,False,True,,Which players had a Player Impact Estimate (PIE) above 20 this season?,Only a small number of elite players exceeded PIE of 20. The query filters for pie > 20 with a reasonable games-played threshold to exclude statistical anomalies from limited-minute players.,"The players with a Player Impact Estimate (PIE) above 20 this season are:
+1. Alondes Williams (DET) - PIE: 40.0
+2. Giannis Antetokounmpo (MIL) - PIE: 21.0
+3. Nikola Jokić (DEN) - PIE: 20.6
+4. Leonard Miller (MIN) - PIE: 20.2","SELECT p.name, t.code AS team,
+       s.pie,
+       ROUND(s.pts * 1.0 / s.gp, 1) AS pts_per_game,
+       ROUND(s.reb * 1.0 / s.gp, 1) AS reb_per_game,
+       ROUND(s.ast * 1.0 / s.gp, 1) AS ast_per_game,
+       s.gp
+FROM players p
+JOIN teams t ON p.team_id = t.team_id
+JOIN player_stats s ON p.player_id = s.player_id
+WHERE s.season = '2024-25' AND s.pie > 20
+ORDER BY s.pie DESC
+LIMIT 20;",True,True,1.0,0.978,,,0.989
+sql_team_aggregation,nba_stats_sql,nba_stats_sql,False,True,,Which team had the most collective wins across all their players this season?,"CLE and OKC players show the highest win totals. Jarrett Allen (CLE) had 64 wins, while SGA (OKC) had 63 wins — indicating these were the two best regular-season teams.","The Oklahoma City Thunder had the most collective wins across all their players this season, with a total of 767 wins.","SELECT t.code, t.full_name,
+       SUM(s.w) AS total_wins
+FROM players p
+JOIN teams t ON p.team_id = t.team_id
+JOIN player_stats s ON p.player_id = s.player_id
+WHERE s.season = '2024-25'
+GROUP BY t.team_id
+ORDER BY total_wins DESC
+LIMIT 1;",True,True,0.5,0.9311,,,0.7156
+sql_team_aggregation,nba_stats_sql,nba_stats_sql,False,True,,Which team had the highest average usage rate across their roster this season?,"MIL had the highest average usage driven by Giannis Antetokounmpo's 34.6% USG. The team-level aggregation shows MIL near the top, as Giannis skews the average significantly.","The Brooklyn Nets had the highest average usage rate across their roster this season, with an average of 19.5% usage rate per player.","SELECT t.code, t.full_name,
+       ROUND(AVG(s.usg_pct), 1) AS avg_usg_pct
+FROM players p
+JOIN teams t ON p.team_id = t.team_id
+JOIN player_stats s ON p.player_id = s.player_id
+WHERE s.season = '2024-25' AND s.gp >= 20
+GROUP BY t.team_id
+ORDER BY avg_usg_pct DESC
+LIMIT 1;",True,True,0.0,0.9831,,,0.4915
+sql_nl_mapping,nba_stats_sql,nba_stats_sql,False,True,,Who plays the fastest style of basketball this season?,OKC leads in pace at approximately 100.5 possessions per 48 minutes based on player pace metrics in the database. The pace column directly measures this.,"The Chicago Bulls have the fastest style of basketball this season, with an average pace of 105.8 possessions per game.","SELECT t.code, t.full_name,
+       ROUND(AVG(s.pace), 1) AS avg_pace
+FROM players p
+JOIN teams t ON p.team_id = t.team_id
+JOIN player_stats s ON p.player_id = s.player_id
+WHERE s.season = '2024-25'
+GROUP BY t.team_id
+ORDER BY avg_pace DESC
+LIMIT 1;",True,True,0.0,0.9243,,,0.4622
+sql_nl_mapping,nba_stats_sql,nba_stats_sql,False,True,,Which team shares the ball the best?,Minnesota and Golden State have high collective ast_ratio values. The ast_ratio column (assists per 100 possessions) is the best proxy for ball movement quality.,"The Denver Nuggets have the highest assists per game this season, averaging 3.0 assists per game, indicating they share the ball the best among NBA teams.","SELECT t.code, t.full_name,
+       ROUND(SUM(s.ast) * 1.0 / SUM(s.gp), 1) AS ast_per_game
+FROM players p
+JOIN teams t ON p.team_id = t.team_id
+JOIN player_stats s ON p.player_id = s.player_id
+WHERE s.season = '2024-25'
+GROUP BY t.team_id
+ORDER BY ast_per_game DESC
+LIMIT 1;",True,True,0.3333,0.7902,,,0.5617
+hybrid_text_numeric,both,nba_knowledge_rag+nba_stats_sql,True,True,,The stats show Randle is shooting 45% from three this season — do Reddit fans acknowledge this improvement?,"The database confirms Randle shot 45% from three (a massive boost for a career 33% shooter). Reddit fans in the playoff discussions explicitly praise this improvement, calling it 'a massive boost balancing out rough stretches from teammates'.","Reddit discussions acknowledge Julius Randle's improved three-point shooting this season, with one user noting he was ""north of 35%"". However, the actual data shows Randle is shooting 34.4% from three this season, not 45%. The discrepancy suggests the 45% figure may be incorrect or outdated.","SELECT p.name, t.code AS team,
+       s.three_p_pct,
+       CAST(s.min_after_15 AS INT) AS three_made,
+       CAST(s.three_pa AS INT) AS three_att
+FROM players p
+JOIN teams t ON p.team_id = t.team_id
+JOIN player_stats s ON p.player_id = s.player_id
+WHERE s.season = '2024-25' AND p.name LIKE '%Julius Randle%'
+LIMIT 1;",True,True,0.4,0.8653,0.0,0.0,0.3163
+hybrid_text_numeric,both,nba_stats_sql,False,False,missed_rag,Is SGA's statistical dominance this season (league-leading scorer) reflected in what Reddit fans say about him?,SGA led the league with 2485 points (32.7 PPG). Reddit fans describe him as 'one of the best players in the league' though some note he plays on a small market team with low national visibility.,"Shai Gilgeous-Alexander is indeed the league-leading scorer this season with 32.7 points per game (2,485 total points) and a scoring rank of 1. I will now check Reddit fan opinions about his performance.","SELECT p.name, t.code AS team,
+       ROUND(s.pts * 1.0 / s.gp, 1) AS pts_per_game,
+       s.pts AS total_points,
+       RANK() OVER (ORDER BY s.pts * 1.0 / s.gp DESC) AS scoring_rank
+FROM players p
+JOIN teams t ON p.team_id = t.team_id
+JOIN player_stats s ON p.player_id = s.player_id
+WHERE s.season = '2024-25' AND p.name LIKE '%Shai Gilgeous-Alexander%'
+LIMIT 1;",True,True,0.6,0.6875,,,0.6438
+hybrid_text_numeric,both,nba_stats_sql+nba_knowledge_rag,True,True,,Reddit fans call the Orlando Magic offense 'basketball terrorism' — what do their offensive stats show?,"Reddit fans criticize the Magic's offense as slow and lacking shooters. The stats confirm this: Magic players show low pace and below-average off_rtg values, consistent with the fan narrative about poor floor spacing.","The Orlando Magic's offensive statistics this season show a pace of 98.1 (one of the slowest in the league), an offensive rating of 107.9 (below average), 3.1 three-point attempts per game (very low), 2.0 free throw attempts per game (indicating limited aggression at the rim), and a turnover rate of 9.2% (slightly below average). Reddit fans and analysts describe the Magic's offense as lacking shooters, playing at a slow pace, and relying on physicality rather than skill or shooting efficiency. The ""basketball terrorism"" label likely refers to their aggressive, physical style rather than statistical dominance.","SELECT t.code AS team,
+       ROUND(AVG(s.pace), 1) AS avg_pace,
+       ROUND(AVG(s.off_rtg), 1) AS avg_off_rtg,
+       ROUND(AVG(s.three_pa * 1.0 / s.gp), 1) AS three_pa_per_game,
+       ROUND(AVG(s.fta * 1.0 / s.gp), 1) AS fta_per_game,
+       ROUND(AVG(s.to_ratio), 1) AS avg_to_ratio
+FROM players p
+JOIN teams t ON p.team_id = t.team_id
+JOIN player_stats s ON p.player_id = s.player_id
+WHERE s.season = '2024-25' AND t.code = 'ORL'
+GROUP BY t.team_id;",True,True,0.4667,0.8635,0.5,0.0,0.4576
+hybrid_text_numeric,both,nba_stats_sql+nba_knowledge_rag,True,True,,"Who are the top 3 players by PIE this season, and what do their stats suggest about their overall impact?","The top players by PIE include Nikola Jokić, SGA, and Giannis. PIE values above 20 indicate elite overall impact — these players also lead in net_rtg and contribute across multiple statistical categories.","The top 3 players by PIE (Player Impact Estimate) this season are:
+
+1. **Alondes Williams (DET)** - PIE: 40.0
+   - **Stats**: 5.0 PPG, 0.0 RPG, 1.0 APG, 85.7% TS, +85.7 Net Rating
+   - **Impact**: While his stats are modest, his PIE suggests he is having a significant impact on the Pistons' performance, possibly through defensive contributions or role-specific efficiency.
+
+2. **Giannis Antetokounmpo (MIL)** - PIE: 21.0
+   - **Stats**: 30.4 PPG, 11.9 RPG, 6.5 APG, 62.5% TS, +7.2 Net Rating
+   - **Impact**: Giannis is a dominant two-way force, leading the Bucks in scoring, rebounding, and playmaking. Analysts and fans highlight his consistency and leadership, though some criticize his flopping tendencies. His high PIE reflects his all-around dominance.
+
+3. **Nikola Jokić (DEN)** - PIE: 20.6
+   - **Stats**: 29.6 PPG, 12.7 RPG, 10.2 APG, 66.3% TS, +10.5 Net Rating
+   - **Impact**: Jokić is a generational talent, praised for his passing, scoring, and basketball IQ. His PIE underscores his role as the Nuggets' primary playmaker and offensive engine. Some fans argue he is the best player in the league but is often overshadowed by flopping controversies.
+
+**Qualitative Insights**:
+- **Giannis** is seen as a consistent superstar, though his flopping has drawn criticism.
+- **Jokić** is widely regarded as an elite player but faces scrutiny for his playing style.
+- **Alondes Williams** is less discussed, suggesting his impact may be more situational or defensive-focused.
+
+These players' PIE rankings align with their reputations as high-impact players, with Jokić and Giannis being franchise cornerstones.","SELECT p.name, t.code AS team,
+       ROUND(s.pie, 1) AS pie,
+       ROUND(s.pts * 1.0 / s.gp, 1) AS pts_per_game,
+       ROUND(s.reb * 1.0 / s.gp, 1) AS reb_per_game,
+       ROUND(s.ast * 1.0 / s.gp, 1) AS ast_per_game,
+       ROUND(s.ts_pct, 3) AS ts_pct,
+       ROUND(s.net_rtg, 1) AS net_rtg
+FROM players p
+JOIN teams t ON p.team_id = t.team_id
+JOIN player_stats s ON p.player_id = s.player_id
+WHERE s.season = '2024-25'
+ORDER BY s.pie DESC
+LIMIT 3;",True,True,0.2857,0.9484,0.0,0.0,0.3085
+sql_edge_case,nba_stats_sql,nba_stats_sql+nba_knowledge_rag,True,True,,Compare OKC's home and away statistics this season.,Information not available in the source. The database contains only season-aggregate statistics — there are no home/away splits in the player_stats table.,"The database does not contain home/away split statistics for OKC or any other team. However, in the NBA, home and away performance differences are influenced by factors like crowd energy, travel fatigue, and familiarity with the home arena. Teams often perform better at home due to the ""home-court advantage,"" which can include more comfortable playing conditions and supportive fans. For specific OKC home/away stats, you would need to consult a source that tracks these splits, as the database only provides season-aggregate statistics.",,True,False,0.1429,0.0,0.5,0.0,0.1607
+sql_edge_case,nba_stats_sql,nba_stats_sql+nba_knowledge_rag,True,True,,How much has Victor Wembanyama improved compared to last season?,Information not available in the source. The database only contains 2024-25 season data. No prior season stats are available for year-over-year comparison.,"The available data does not provide specific insights on Victor Wembanyama's improvement from last season to this season. The discussions and analyses available are focused on other players and teams, and no statistical data is available for comparison.",,True,False,1.0,0.0,0.3333,0.0,0.3333
+sql_edge_case,nba_stats_sql,nba_stats_sql+nba_knowledge_rag,True,True,,Which player had the highest scoring game of the season?,"Information not available in the source. The database contains only season totals and aggregates, not individual game logs. Single-game highs cannot be determined from the player_stats table.",The data for the highest single-game point total by any player this season is not available in the current sources.,,True,False,1.0,0.0,0.3333,0.2917,0.4062
+sql_edge_case,nba_stats_sql,nba_stats_sql+nba_knowledge_rag,True,True,,Who is the most clutch player this season?,"Information not available in the source. No clutch-time split exists in the database. The closest proxy is plus_minus, where players like SGA and Jokić show high values.","Based on fan opinions and analyst commentary, Shai Gilgeous-Alexander is frequently mentioned as one of the most clutch players in the current NBA season. He has been noted for his performance in high-pressure situations, including leading comebacks in playoff history. Additionally, discussions highlight his efficiency and impact, particularly with the Oklahoma City Thunder. However, the data does not provide a definitive answer for the most clutch player this season, as the available information is more historical and comparative rather than current-season specific.",,True,False,0.5714,0.0,0.3333,0.0,0.2262

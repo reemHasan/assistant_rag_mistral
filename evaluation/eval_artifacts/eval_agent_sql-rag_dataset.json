@@ -1,0 +1,128 @@
+[
+  {
+    "category": "sql_simple_ranking",
+    "question": "Who grabbed the most total rebounds this season?",
+    "ground_truth": "Ivica Zubac led with 1008 total rebounds in 80 games, followed by Domantas Sabonis (973 in 70 games) and Karl-Anthony Towns (922 in 72 games).",
+    "expected_tool": "nba_stats_sql",
+    "sql_hint": "ORDER BY reb DESC LIMIT 5"
+  },
+  {
+    "category": "sql_simple_ranking",
+    "question": "Who had the most double-doubles this season?",
+    "ground_truth": "Domantas Sabonis led with 61 double-doubles in 70 games, followed by Nikola Jokić (59 in 70 games) and Ivica Zubac (59 in 80 games).",
+    "expected_tool": "nba_stats_sql",
+    "sql_hint": "ORDER BY dd2 DESC LIMIT 5"
+  },
+  {
+    "category": "sql_simple_ranking",
+    "question": "Which player had the best true shooting percentage this season with at least 500 points?",
+    "ground_truth": "Jarrett Allen led with 72.4% TS on 1107 points, followed by Daniel Gafford at 71.6% and Jalen Duren at 70.3%.",
+    "expected_tool": "nba_stats_sql",
+    "sql_hint": "WHERE pts >= 500 ORDER BY ts_pct DESC LIMIT 5"
+  },
+  {
+    "category": "sql_simple_ranking",
+    "question": "Which player had the highest usage rate this season (minimum 40 games)?",
+    "ground_truth": "Giannis Antetokounmpo had the highest usage rate at 34.6% in 67 games, followed by SGA at 33.6% in 76 games.",
+    "expected_tool": "nba_stats_sql",
+    "sql_hint": "WHERE gp >= 40 ORDER BY usg_pct DESC LIMIT 5"
+  },
+    {
+    "category": "sql_noisy",
+    "question": "qui marque le plus de points dans la ligue cette saison?",
+    "ground_truth": "Shai Gilgeous-Alexander led the league with 2485 total points (32.7 per game) in 76 games during the 2024-25 season.",
+    "expected_tool": "nba_stats_sql",
+    "sql_hint": "ORDER BY pts DESC LIMIT 5 — French language query should still route to SQL tool"
+  },
+  {
+    "category": "sql_noisy",
+    "question": "whos the best rebounder rn in nba stats wise",
+    "ground_truth": "Ivica Zubac led with 1008 total rebounds (12.6 per game) in 80 games, followed by Domantas Sabonis with 973 rebounds in 70 games.",
+    "expected_tool": "nba_stats_sql",
+    "sql_hint": "ORDER BY reb DESC — informal English should still route to SQL tool"
+  },
+  {
+    "category": "sql_advanced",
+    "question": "Which team had the best average net rating this season?",
+    "ground_truth": "OKC players had the best collective net rating figures. Individually, players on winning teams like CLE and OKC show the highest net ratings. The query groups by team to find the best aggregate net rating.",
+    "expected_tool": "nba_stats_sql",
+    "sql_hint": "GROUP BY team ORDER BY AVG(net_rtg) DESC"
+  },
+  {
+    "category": "sql_advanced",
+    "question": "Who had the best effective field goal percentage (EFG%) this season with at least 500 points?",
+    "ground_truth": "Jarrett Allen led with 70.6% EFG on 1107 points, followed by Daniel Gafford at 70.2% and Jalen Duren at 69.2%.",
+    "expected_tool": "nba_stats_sql",
+    "sql_hint": "WHERE pts >= 500 ORDER BY efg_pct DESC LIMIT 10"
+  },
+  {
+    "category": "sql_advanced",
+    "question": "Which players had a Player Impact Estimate (PIE) above 20 this season?",
+    "ground_truth": "Only a small number of elite players exceeded PIE of 20. The query filters for pie > 20 with a reasonable games-played threshold to exclude statistical anomalies from limited-minute players.",
+    "expected_tool": "nba_stats_sql",
+    "sql_hint": "WHERE pie > 20 AND gp >= 20 ORDER BY pie DESC"
+  },
+  {
+    "category": "sql_team_aggregation",
+    "question": "Which team had the most collective wins across all their players this season?",
+    "ground_truth": "CLE and OKC players show the highest win totals. Jarrett Allen (CLE) had 64 wins, while SGA (OKC) had 63 wins — indicating these were the two best regular-season teams.",
+    "expected_tool": "nba_stats_sql",
+    "sql_hint": "GROUP BY team ORDER BY AVG(w) DESC or MAX(w) DESC"
+  },
+  {
+    "category": "sql_team_aggregation",
+    "question": "Which team had the highest average usage rate across their roster this season?",
+    "ground_truth": "MIL had the highest average usage driven by Giannis Antetokounmpo's 34.6% USG. The team-level aggregation shows MIL near the top, as Giannis skews the average significantly.",
+    "expected_tool": "nba_stats_sql",
+    "sql_hint": "GROUP BY team ORDER BY AVG(usg_pct) DESC LIMIT 10"
+  },
+ {"category": "sql_nl_mapping",
+ "question": "Who plays the fastest style of basketball this season?",
+ "ground_truth": "OKC leads in pace at approximately 100.5 possessions per 48 minutes based on player pace metrics in the database. The pace column directly measures this.",
+ "expected_tool": "nba_stats_sql"},
+
+{"category": "sql_nl_mapping",
+ "question": "Which team shares the ball the best?",
+ "ground_truth": "Minnesota and Golden State have high collective ast_ratio values. The ast_ratio column (assists per 100 possessions) is the best proxy for ball movement quality.",
+ "expected_tool": "nba_stats_sql"},
+
+ {"category": "hybrid_text_numeric",
+ "question": "The stats show Randle is shooting 45% from three this season — do Reddit fans acknowledge this improvement?",
+ "ground_truth": "The database confirms Randle shot 45% from three (a massive boost for a career 33% shooter). Reddit fans in the playoff discussions explicitly praise this improvement, calling it 'a massive boost balancing out rough stretches from teammates'.",
+ "expected_tool": "both"},
+
+{"category": "hybrid_text_numeric",
+ "question": "Is SGA's statistical dominance this season (league-leading scorer) reflected in what Reddit fans say about him?",
+ "ground_truth": "SGA led the league with 2485 points (32.7 PPG). Reddit fans describe him as 'one of the best players in the league' though some note he plays on a small market team with low national visibility.",
+ "expected_tool": "both"},
+
+{"category": "hybrid_text_numeric",
+ "question": "Reddit fans call the Orlando Magic offense 'basketball terrorism' — what do their offensive stats show?",
+ "ground_truth": "Reddit fans criticize the Magic's offense as slow and lacking shooters. The stats confirm this: Magic players show low pace and below-average off_rtg values, consistent with the fan narrative about poor floor spacing.",
+ "expected_tool": "both"},
+
+{"category": "hybrid_text_numeric",
+ "question": "Who are the top 3 players by PIE this season, and what do their stats suggest about their overall impact?",
+ "ground_truth": "The top players by PIE include Nikola Jokić, SGA, and Giannis. PIE values above 20 indicate elite overall impact — these players also lead in net_rtg and contribute across multiple statistical categories.",
+ "expected_tool": "both"},
+
+{"category": "sql_edge_case",
+ "question": "Compare OKC's home and away statistics this season.",
+ "ground_truth": "Information not available in the source. The database contains only season-aggregate statistics — there are no home/away splits in the player_stats table.",
+ "expected_tool": "nba_stats_sql"},
+
+{"category": "sql_edge_case",
+ "question": "How much has Victor Wembanyama improved compared to last season?",
+ "ground_truth": "Information not available in the source. The database only contains 2024-25 season data. No prior season stats are available for year-over-year comparison.",
+ "expected_tool": "nba_stats_sql"},
+
+{"category": "sql_edge_case",
+ "question": "Which player had the highest scoring game of the season?",
+ "ground_truth": "Information not available in the source. The database contains only season totals and aggregates, not individual game logs. Single-game highs cannot be determined from the player_stats table.",
+ "expected_tool": "nba_stats_sql"},
+
+ {"category": "sql_edge_case",
+ "question": "Who is the most clutch player this season?",
+ "ground_truth": "Information not available in the source. No clutch-time split exists in the database. The closest proxy is plus_minus, where players like SGA and Jokić show high values.",
+ "expected_tool": "nba_stats_sql"}
+]

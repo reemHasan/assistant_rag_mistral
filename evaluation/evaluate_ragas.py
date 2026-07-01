@@ -124,7 +124,6 @@ def build_rag_answer(
     except Exception:
         logfire.exception("Agent invocation failed")
         return "", []
-    q_without_ansr = 0
     answer = result.get("output", "")
     steps = result.get("intermediate_steps", [])
     contexts = []
