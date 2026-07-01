@@ -39,7 +39,7 @@ def history_to_text(history):
 
     return "\n".join(lines)
 
-# --- Chargement du Vector Store (mis en cache) ---
+# --- Chargement du AgentExecuter (mis en cache) ---
 @st.cache_resource # Garde l'agent chargé en mémoire pour la session
 def get_agent():
     logging.info("Tentative de chargement du agent...")

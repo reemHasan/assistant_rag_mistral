@@ -45,3 +45,4 @@ data/
 .ipynb_checkpoints
 
 vector_db/
+sqlite_db/
