@@ -26,7 +26,8 @@ EVALUATION_MODEL_MISTRAL = "mistral-large-latest"
 
 # --- Configuration de l'Indexation ---
 # INPUT_DATA_URL = os.getenv("INPUT_DATA_URL") # Décommentez si vous utilisez une URL
-BASE_DIR = Path(__file__).parent.parent
+#BASE_DIR = Path(__file__).parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 INPUT_DIR = BASE_DIR/"inputs/inputs_rag_tool"                # Dossier pour les données sources après extraction
 VECTOR_DB_DIR = BASE_DIR/"vector_db"         # Dossier pour stocker l'index Faiss et les chunks
 #FAISS_INDEX_FILE = os.path.join(VECTOR_DB_DIR, "faiss_index.idx")
@@ -44,9 +45,12 @@ EVALUATION_MODEL_NAME = "gemini-3.1-flash-lite"
 EVALUATION_EMBEDDING  = "gemini-embedding-2-preview"
 
 # --- Configuration de la Base de Données ---
-DATABASE_DIR = BASE_DIR/"sqlite_db"
-DATABASE_FILE = os.path.join(DATABASE_DIR, "nba.db")
-DATABASE_URL = f"sqlite:///{DATABASE_FILE}" # URL pour SQLAlchemy
+DATABASE_DIR = BASE_DIR / "sqlite_db"
+DATABASE_DIR.mkdir(exist_ok=True)
+# sqlite3
+DATABASE_FILE = DATABASE_DIR / "nba.db"
+# SQLAlchemy
+DATABASE_URL = f"sqlite:///{DATABASE_FILE.as_posix()}"
 
 # --- Configuration de l'Application ---
 APP_TITLE = "NBA Analyst AI"

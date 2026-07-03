@@ -150,7 +150,7 @@ Gère la base de données SQLite pour les interactions :
 - Récupération des statistiques
 - create db and inser info into tables 
 ```bash
-(assistant-rag-mistral-v2)\assistant_rag_mistral> python -m utils.load_excel_to_db --excel '.\inputs\inputs_sql_tool\regular+NBA+(2).xlsx' --db ./sqlite_db/nba.db
+(assistant-rag-mistral-v2)\assistant_rag_mistral> python -m utils.load_excel_to_db --excel '.\inputs\inputs_sql_tool\regular+NBA+(2).xlsx'
 ```
 - run generator and chat with it in CLI
 ```bash

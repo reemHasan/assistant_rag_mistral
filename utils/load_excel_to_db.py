@@ -37,6 +37,7 @@ from pathlib import Path
 from typing import Optional
 from utils.db import DDL
 from utils.models import TeamRow, PlayerStatsRow
+from utils.config import DATABASE_FILE
 import pandas as pd
 
 logging.basicConfig(
@@ -292,7 +293,6 @@ def save_schema(db_path: Path) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Load NBA Excel data into SQLite.")
     parser.add_argument("--excel", required=True, help="Path to the Excel file")
-    parser.add_argument("--db",    required=True, help="Path to the SQLite database")
     parser.add_argument(
         "--reset", action="store_true",
         help="Drop all tables and rebuild from scratch",
@@ -300,12 +300,10 @@ def main() -> None:
     args = parser.parse_args()
 
     excel_path = Path(args.excel)
-    db_path    = Path(args.db)
-    print(db_path)
     if not excel_path.exists():
         raise FileNotFoundError(f"Excel file not found: {excel_path}")
 
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(DATABASE_FILE)
     conn.execute("PRAGMA foreign_keys = ON")
     conn.execute("PRAGMA journal_mode = WAL")
     # delete all tables in db
@@ -319,7 +317,7 @@ def main() -> None:
         """)
 
     create_db(conn)
-    save_schema(db_path)
+    save_schema(DATABASE_FILE)
 
     teams, stats = read_excel(excel_path)
     team_map     = insert_teams(conn, teams)
@@ -335,7 +333,7 @@ def main() -> None:
     log.info("Verification → players: %d | stats rows: %d", n_players, n_stats)
 
     conn.close()
-    log.info("Done. Database saved to %s", db_path)
+    log.info("Done. Database saved to %s", DATABASE_FILE)
 
 
 if __name__ == "__main__":
