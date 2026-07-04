@@ -7,12 +7,12 @@
 ## Table of Contents
 
 1. [Project Overview](#1-project-overview)
-2. [Architecture](#2-architecture)
-3. [RAG Pipeline Methodology](#3-rag-pipeline-methodology)
-4. [SQL Tool Methodology](#4-sql-tool-methodology)
-5. [Agent Design](#5-agent-design)
-6. [Evaluation Framework](#6-evaluation-framework)
-7. [Project Structure](#7-project-structure)
+2. [Project Structure](#2-project-structure)
+3. [Architecture](#3-architecture)
+4. [RAG Pipeline Methodology](#4-rag-pipeline-methodology)
+5. [SQL Tool Methodology](#5-sql-tool-methodology)
+6. [Agent Design](#6-agent-design)
+7. [Evaluation Framework](#7-evaluation-framework)
 8. [Setup & Installation](#8-setup--installation)
 9. [Usage](#9-usage)
 10. [Known Limitations](#10-known-limitations)
