@@ -43,6 +43,7 @@ schema, and about 600 tokens are NOT re-sent on every invocation.
 from __future__ import annotations
 import hashlib
 import logging
+import logfire
 import re
 import time
 from typing import Any, Optional, Type
@@ -245,12 +246,12 @@ class NBAStatsSQLTool(BaseTool):
             pause = self.min_call_interval - elapsed
             log.debug("Rate-limit pause: %.2fs", pause)
             time.sleep(pause)
-
+    @logfire.instrument("trace_sql_tool")
     def _run(self, question: str) -> str:
         # ── Guard: detect structurally unanswerable questions ─────────────
         not_available = self._check_schema_feasibility(question)
         if not_available:
-            log.info("Schema feasibility check blocked query: %s", question[:60])
+            logfire.info("Schema feasibility check blocked query: %s", question[:60])
             return not_available
 
         # ── Cache lookup ──────────────────────────────────────────────────
@@ -258,7 +259,7 @@ class NBAStatsSQLTool(BaseTool):
         # return the cached result without any API call.
         cache_key = hashlib.sha256(question.encode()).hexdigest()
         if cache_key in self._sql_cache:
-            log.info("SQL cache hit for: %s", question[:60])
+            logfire.info("SQL cache hit for: %s", question[:60])
             return self._sql_cache[cache_key]
 
         # ── Step 1: build prompt using cached schema ──────────────────────
@@ -275,6 +276,7 @@ class NBAStatsSQLTool(BaseTool):
             self._last_call_time = time.time()
             sql = response.content if hasattr(response, "content") else str(response)
         except Exception as exc:
+            logfire.error(f"SQL generation failed: {exc}")
             return f"SQL generation failed: {exc}"
 
         # Strip accidental markdown fences
@@ -282,7 +284,7 @@ class NBAStatsSQLTool(BaseTool):
         sql = re.sub(r"```\s*",   "", sql)
         sql = sql.strip()
 
-        log.info("Generated SQL:\n%s", sql)
+        logfire.info("Generated SQL:",generated_sql=sql)
 
         # Safety: block non-SELECT statements
         first_word = sql.split()[0].upper() if sql.strip() else ""
@@ -293,14 +295,15 @@ class NBAStatsSQLTool(BaseTool):
         try:
             result = self.db.run(sql)
         except Exception as exc:
-            log.warning("SQL execution error: %s\nQuery: %s", exc, sql)
+            logfire.warning("SQL execution error: %s\nQuery: %s", exc, sql)
             return f"SQL execution error: {exc}\nGenerated query:\n{sql}"
 
         if not result or result.strip() == "":
+            logfire.warning(f"No results found.\nQuery:\n{sql}")
             return f"No results found.\nQuery:\n{sql}"
 
         output = f"SQL:\n{sql}\n\nRESULTS:\n{result}"
-
+        logfire.info("Sql tool found results for the following question ",query_snippet = question[:60], returned= output)
         # ── Cache the result ──────────────────────────────────────────────
         self._sql_cache[cache_key] = output
         return output

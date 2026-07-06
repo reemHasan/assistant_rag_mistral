@@ -72,7 +72,7 @@ class NBAKnowledgeTool(BaseTool):
                     f"[Chunk {i} | source: {source} | topic: {topic} | score: {score}]\n"
                     f"{doc.page_content}"
                 )
-            logfire.info("Found interesting chuncks in Faiss store", query_snippet = question[:60], returned= len(docs),)
+            logfire.info("RAg tool found interesting chuncks in Faiss store", query_snippet = question[:60], returned= len(docs),)
             return "\n\n---\n\n".join(parts)
 
     async def _arun(self, question: str) -> str:

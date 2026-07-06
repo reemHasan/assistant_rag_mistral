@@ -1,6 +1,7 @@
 # MistralChat.py (version Agent RAG & SQL)
 import streamlit as st
 import logging
+import logfire
 from langchain_core.messages import HumanMessage, AIMessage
 # --- Importations depuis vos modules ---
 try:
@@ -94,11 +95,14 @@ if user_prompt := st.chat_input(f"Posez votre question sur la {NAME}..."):
         message_placeholder = st.empty()
         message_placeholder.text("...") # Indicateur simple
         try:
-            result = agent.invoke(
-                {"input": user_prompt,
-                "chat_history": history_to_text(st.session_state.chat_history),}
-                )
-            response_content = result["output"]
+            with logfire.span("ReAct Agent: "):
+                logfire.info("Agent invoked", question=user_prompt)
+                result = agent.invoke(
+                    {"input": user_prompt,
+                    "chat_history": history_to_text(st.session_state.chat_history),}
+                    )
+                response_content = result["output"]
+                logfire.info("Agent finished", answer=response_content)
             # Affichage de la réponse complète
             message_placeholder.write(response_content)
         except Exception as e:
