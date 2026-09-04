@@ -20,9 +20,9 @@ elif not LOGFIRE_TOKEN:
 
 # --- Modèles Mistral ---
 EMBEDDING_MODEL = "mistral-embed-2312"
-MODEL_NAME = "mistral-small-2506" # Ou un autre modèle comme mistral-large-latest
-SQL_MODEL = "mistral-large-latest"
-EVALUATION_MODEL_MISTRAL = "mistral-large-latest"
+MODEL_NAME = "mistral-small-2603" # Ou un autre modèle comme mistral-large-latest
+SQL_MODEL = "mistral-medium-latest" #"mistral-large-latest
+EVALUATION_MODEL_MISTRAL = "mistral-large-2512" #"mistral-large-latest"
 
 # --- Configuration de l'Indexation ---
 # INPUT_DATA_URL = os.getenv("INPUT_DATA_URL") # Décommentez si vous utilisez une URL

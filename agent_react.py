@@ -271,7 +271,7 @@ def build_agent(
         temperature = 0,   # deterministic SQL generation
         streaming = False,   # ← disables chunk-by-chunk generation
     )
-
+    print("sql model is :", sql_model)
     # ── Embeddings (for FAISS cosine retrieval) ────────────────────────────
     embeddings = MistralAIEmbeddings(
         model   = embed_model,
