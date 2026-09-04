@@ -1,6 +1,6 @@
-# NBA Analytics Assistant — RAG + SQL Agent
+# NBA Analytics Assistant - RAG + SQL Agent
 
-> An intelligent assistant for NBA coaches and scouts combining Retrieval-Augmented Generation (RAG) over Reddit discussion corpora with a structured SQL query tool over season statistics — powered by Mistral and evaluated with RAGAS.
+> An intelligent assistant for NBA coaches and scouts combining Retrieval-Augmented Generation (RAG) over Reddit discussion corpora with a structured SQL query tool over season statistics, powered by Mistral and evaluated with RAGAS.
 
 ---
 
